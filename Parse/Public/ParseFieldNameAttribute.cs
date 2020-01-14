@@ -19,14 +19,11 @@ namespace Parse
         /// </summary>
         /// <param name="fieldName">The name of the field on the ParseObject that the
         /// property represents.</param>
-        public ParseFieldNameAttribute(string fieldName)
-        {
-            FieldName = fieldName;
-        }
+        public ParseFieldNameAttribute(string fieldName) => FieldName = fieldName;
 
         /// <summary>
         /// Gets the name of the field represented by this property.
         /// </summary>
-        public string FieldName { get; private set; }
+        public string FieldName { get; }
     }
 }

@@ -29,7 +29,7 @@ namespace Parse
     /// to specify which existing data to retrieve.
     /// </para>
     /// </remarks>
-    public class ParseObject : IEnumerable<KeyValuePair<string, object>>, INotifyPropertyChanged
+    public class ParseObject : IEnumerable<KeyValuePair<string, object>>, INotifyPropertyChanged, IParseObject
     {
         private static readonly string AutoClassName = "_Automatic";
 
@@ -265,14 +265,11 @@ namespace Parse
                 bool wasDirty = nextOperations.Count > 0;
                 operationSetQueue.Remove(opNode);
                 // Merge the data from the failed save into the next save.
-                foreach (var pair in operationsBeforeSave)
+                foreach (KeyValuePair<string, IParseFieldOperation> pair in operationsBeforeSave)
                 {
-                    var operation1 = pair.Value;
+                    IParseFieldOperation operation1 = pair.Value;
                     nextOperations.TryGetValue(pair.Key, out IParseFieldOperation operation2);
-                    if (operation2 != null)
-                        operation2 = operation2.MergeWithPrevious(operation1);
-                    else
-                        operation2 = operation1;
+                    operation2 = operation2 != null ? operation2.MergeWithPrevious(operation1) : operation1;
                     nextOperations[pair.Key] = operation2;
                 }
                 if (!wasDirty && nextOperations == CurrentOperations && operationsBeforeSave.Count > 0)
