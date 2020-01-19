@@ -12,12 +12,12 @@ using Parse.Common.Internal;
 
 namespace Parse
 {
-    /// <summary>
+	/// <summary>
     /// Represents a user for a Parse application.
     /// </summary>
     [ParseClassName("_User")]
-    public class ParseUser : ParseObject
-    {
+    public class ParseUser : ParseObject, IParseUser
+	{
         private static readonly IDictionary<string, IParseAuthenticationProvider> authProviders = new Dictionary<string, IParseAuthenticationProvider>();
 
         private static readonly HashSet<string> readOnlyKeys = new HashSet<string> { "sessionToken", "isNew" };
