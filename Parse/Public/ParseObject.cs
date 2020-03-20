@@ -94,9 +94,7 @@ namespace Parse
                 throw new ArgumentException("You must specify a Parse class name when creating a new ParseObject.");
             if (AutoClassName.Equals(className))
                 className = SubclassingController.GetClassName(GetType());
-            // If this is supposed to be created by a factory but wasn't, throw an exception
-            if (!SubclassingController.IsTypeValid(className, GetType()))
-                throw new ArgumentException("You must create this type of ParseObject using ParseObject.Create() or the proper subclass.");
+
             state = new MutableObjectState { ClassName = className };
             OnPropertyChanged("ClassName");
 
@@ -332,7 +330,7 @@ namespace Parse
             }
         }
 
-        internal void MergeFromObject(ParseObject other)
+        protected void MergeFromObject(ParseObject other)
         {
             // If they point to the same instance, we don't need to merge
             lock (mutex)
